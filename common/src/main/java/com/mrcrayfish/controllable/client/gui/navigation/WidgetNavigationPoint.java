@@ -2,6 +2,7 @@ package com.mrcrayfish.controllable.client.gui.navigation;
 
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.TabButton;
 
 /**
@@ -25,6 +26,9 @@ public class WidgetNavigationPoint extends NavigationPoint
     @Override
     public boolean shouldHide()
     {
+        // A checkbox shows keyboard focus only, so the cursor is its only sign of being selected
+        if(this.widget instanceof Checkbox)
+            return false;
         return this.widget instanceof AbstractButton || this.widget instanceof TabButton || this.widget instanceof HideCursor;
     }
 }
