@@ -125,7 +125,7 @@ public class RadialMenuHandler
         }
         else
         {
-            this.bindings.addAll(this.getBindings());
+            this.bindings.addAll(this.getDefaults());
             this.save();
         }
 
@@ -158,6 +158,7 @@ public class RadialMenuHandler
     {
         List<ButtonBindingData> defaults = new ArrayList<>();
         defaults.add(new ButtonBindingData(ButtonBindings.OPEN_CONTROLLABLE_SETTINGS, ChatFormatting.BLUE));
+        defaults.add(new ButtonBindingData(ButtonBindings.OPEN_CHAT, ChatFormatting.YELLOW));
         defaults.add(new ButtonBindingData(ButtonBindings.ADVANCEMENTS, ChatFormatting.YELLOW));
         defaults.add(new ButtonBindingData(ButtonBindings.SCREENSHOT, ChatFormatting.YELLOW));
         defaults.add(new ButtonBindingData(ButtonBindings.FULLSCREEN, ChatFormatting.YELLOW));
