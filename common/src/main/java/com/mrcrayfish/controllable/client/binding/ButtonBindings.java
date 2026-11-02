@@ -11,7 +11,7 @@ public class ButtonBindings
     public static final ButtonBinding SNEAK = new ButtonBinding(Buttons.RIGHT_THUMB_STICK, "key.sneak", "key.categories.movement", BindingContext.IN_GAME);
     public static final ButtonBinding SPRINT = new ButtonBinding(Buttons.LEFT_THUMB_STICK, "key.sprint", "key.categories.movement", BindingContext.IN_GAME);
     public static final ButtonBinding OPEN_INVENTORY = new ButtonBinding(Buttons.Y, "controllable.key.open_inventory", "key.categories.inventory", BindingContext.IN_GAME);
-    public static final ButtonBinding CLOSE_INVENTORY = new ButtonBinding(Buttons.Y, "controllable.key.close_inventory", "key.categories.inventory", BindingContext.IN_SCREEN);
+    public static final ButtonBinding CLOSE_INVENTORY = new ButtonBinding(Buttons.B, "controllable.key.close_inventory", "key.categories.inventory", BindingContext.IN_SCREEN);
     public static final ButtonBinding SWAP_HANDS = new ButtonBinding(Buttons.X, "key.swapOffhand", "key.categories.gameplay", BindingContext.IN_GAME);
     public static final ButtonBinding DROP_ITEM = new ButtonBinding(Buttons.DPAD_DOWN, "key.drop", "key.categories.gameplay", BindingContext.IN_GAME);
     public static final ButtonBinding USE_ITEM = new ButtonBinding(Buttons.LEFT_TRIGGER, "key.use", "key.categories.gameplay", BindingContext.IN_GAME);
@@ -32,7 +32,7 @@ public class ButtonBindings
     public static final ButtonBinding NAVIGATE_LEFT = new ButtonBinding(Buttons.DPAD_LEFT, "controllable.key.move_left", "key.categories.ui", BindingContext.IN_SCREEN);
     public static final ButtonBinding NAVIGATE_RIGHT = new ButtonBinding(Buttons.DPAD_RIGHT, "controllable.key.move_right", "key.categories.ui", BindingContext.IN_SCREEN);
     public static final ButtonBinding PICKUP_ITEM = new ButtonBinding(Buttons.A, "controllable.key.pickup_item", "key.categories.inventory", BindingContext.IN_SCREEN);
-    public static final ButtonBinding QUICK_MOVE = new ButtonBinding(Buttons.B, "controllable.key.quick_move", "key.categories.inventory", BindingContext.IN_SCREEN);
+    public static final ButtonBinding QUICK_MOVE = new ButtonBinding(Buttons.Y, "controllable.key.quick_move", "key.categories.inventory", BindingContext.IN_SCREEN);
     public static final ButtonBinding SPLIT_STACK = new ButtonBinding(Buttons.X, "controllable.key.split_stack", "key.categories.inventory", BindingContext.IN_SCREEN);
     public static final ButtonBinding SOCIAL_INTERACTIONS = new ButtonBinding(-1, "key.socialInteractions", "key.categories.multiplayer", BindingContext.IN_GAME);
     public static final ButtonBinding ADVANCEMENTS = new ButtonBinding(-1, "key.advancements", "key.categories.misc", BindingContext.IN_GAME);
