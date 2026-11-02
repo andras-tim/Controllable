@@ -21,4 +21,4 @@ plugins {
 }
 
 rootProject.name = 'Controllable'
-include("common", "fabric", "forge")
+include("common", "forge")
