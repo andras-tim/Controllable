@@ -17,6 +17,7 @@ import com.mrcrayfish.controllable.client.gui.navigation.WidgetNavigationPoint;
 import com.mrcrayfish.controllable.client.gui.screens.ControllerLayoutScreen;
 import com.mrcrayfish.controllable.client.gui.screens.SettingsScreen;
 import com.mrcrayfish.controllable.client.input.Controller;
+import com.mrcrayfish.controllable.client.input.Buttons;
 import com.mrcrayfish.controllable.client.util.ClientHelper;
 import com.mrcrayfish.controllable.client.util.EventHelper;
 import com.mrcrayfish.controllable.client.util.ScreenHelper;
@@ -887,6 +888,10 @@ public class ControllerInput
                         this.scrollRecipePage(listener.getRecipeBookComponent(), -1);
                     }
                 }
+                else if(this.isTriggerClick(mc.screen, button))
+                {
+                    this.invokeMouseClick(mc.screen, button == Buttons.RIGHT_TRIGGER ? 0 : 1);
+                }
                 else if(ButtonBindings.NEXT_RECIPE_TAB.isButtonPressed())
                 {
                     if(mc.screen instanceof RecipeUpdateListener listener)
@@ -983,8 +988,25 @@ public class ControllerInput
                 {
                     this.invokeMouseReleased(mc.screen, 1);
                 }
+                else if(this.isTriggerClick(mc.screen, button))
+                {
+                    this.invokeMouseReleased(mc.screen, button == Buttons.RIGHT_TRIGGER ? 0 : 1);
+                }
             }
         }
+    }
+
+    /**
+     * On screens the triggers are the mouse buttons: right is the primary click, left the secondary. They keep their
+     * own use in an open recipe book and in the settings of this mod.
+     */
+    private boolean isTriggerClick(Screen screen, int button)
+    {
+        if(button != Buttons.RIGHT_TRIGGER && button != Buttons.LEFT_TRIGGER)
+            return false;
+        if(screen instanceof SettingsScreen)
+            return false;
+        return !(screen instanceof RecipeUpdateListener listener && listener.getRecipeBookComponent().isVisible());
     }
 
     /**
