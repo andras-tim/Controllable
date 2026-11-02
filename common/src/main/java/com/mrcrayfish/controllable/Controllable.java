@@ -6,6 +6,7 @@ import com.mrcrayfish.controllable.client.InputProcessor;
 import com.mrcrayfish.controllable.client.RumbleHandler;
 import com.mrcrayfish.controllable.client.input.Controller;
 import com.mrcrayfish.controllable.client.input.ControllerManager;
+import com.mrcrayfish.controllable.client.settings.InputLibrary;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -78,8 +79,17 @@ public class Controllable
     {
         if(manager == null)
         {
-            manager = Config.CLIENT.inputLibrary.get().createManager();
+            manager = getInputLibrary().createManager();
         }
         return manager;
+    }
+
+    /**
+     * Android launchers run the game with os.name=Linux, so SDL2 would load a glibc native that cannot work there.
+     * PojavLauncher and its forks set POJAV_NATIVEDIR.
+     */
+    private static InputLibrary getInputLibrary()
+    {
+        return System.getenv("POJAV_NATIVEDIR") != null ? InputLibrary.GLFW : Config.CLIENT.inputLibrary.get();
     }
 }
