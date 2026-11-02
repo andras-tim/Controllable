@@ -1103,14 +1103,18 @@ public class ControllerInput
         if(points.isEmpty())
             return;
 
-        Vector3d cursorVec = new Vector3d(cursorX, cursorY, 0);
-        Optional<NavigationPoint> minimumPointOptional = points.stream().min(navigate.getMinComparator(cursorX, cursorY));
-        if(minimumPointOptional.isEmpty())
-            return;
+        Optional<NavigationPoint> targetPointOptional = this.findOverlappingWidget(screen, navigate, points, cursorX, cursorY);
+        if(targetPointOptional.isEmpty())
+        {
+            Vector3d cursorVec = new Vector3d(cursorX, cursorY, 0);
+            Optional<NavigationPoint> minimumPointOptional = points.stream().min(navigate.getMinComparator(cursorX, cursorY));
+            if(minimumPointOptional.isEmpty())
+                return;
 
-        double maxOffset = 18;
-        double minimumDelta = navigate.getKeyExtractor().apply(minimumPointOptional.get(), cursorVec) + maxOffset;
-        Optional<NavigationPoint> targetPointOptional = points.stream().filter(point -> navigate.getKeyExtractor().apply(point, cursorVec) <= minimumDelta).min(Comparator.comparing(p -> p.distanceTo(cursorX, cursorY)));
+            double maxOffset = 18;
+            double minimumDelta = navigate.getKeyExtractor().apply(minimumPointOptional.get(), cursorVec) + maxOffset;
+            targetPointOptional = points.stream().filter(point -> navigate.getKeyExtractor().apply(point, cursorVec) <= minimumDelta).min(Comparator.comparing(p -> p.distanceTo(cursorX, cursorY)));
+        }
         if(targetPointOptional.isPresent())
         {
             NavigationPoint targetPoint = targetPointOptional.get();
@@ -1135,6 +1139,21 @@ public class ControllerInput
                 this.moved = true;
             });
         }
+    }
+
+    /**
+     * The nearest widget in the direction that overlaps the current one, so a row of small buttons under a wide button
+     * is not skipped for the next button with the same center. Slots and lists keep the center based search.
+     */
+    private Optional<NavigationPoint> findOverlappingWidget(Screen screen, Navigate navigate, List<NavigationPoint> points, int cursorX, int cursorY)
+    {
+        if(!(screen.getChildAt(cursorX, cursorY).orElse(null) instanceof AbstractWidget current))
+            return Optional.empty();
+        return points.stream()
+            .filter(point -> point.getClass() == WidgetNavigationPoint.class)
+            .filter(point -> navigate.overlaps(current, ((WidgetNavigationPoint) point).getWidget()))
+            .min(Comparator.<NavigationPoint, Integer>comparing(point -> navigate.gap(current, ((WidgetNavigationPoint) point).getWidget()))
+                .thenComparing(point -> navigate.readingOrder(((WidgetNavigationPoint) point).getWidget())));
     }
 
     private List<NavigationPoint> gatherNavigationPoints(Screen screen, Navigate navigate, int cursorX, int cursorY)
@@ -1609,6 +1628,31 @@ public class ControllerInput
         public Comparator<NavigationPoint> getMinComparator(int cursorX, int cursorY)
         {
             return Comparator.comparing(p -> this.keyExtractor.apply(p, new Vector3d(cursorX, cursorY, 0)));
+        }
+
+        public boolean overlaps(AbstractWidget from, AbstractWidget to)
+        {
+            if(this == UP || this == DOWN)
+            {
+                return from.getX() < to.getX() + to.getWidth() && to.getX() < from.getX() + from.getWidth();
+            }
+            return from.getY() < to.getY() + to.getHeight() && to.getY() < from.getY() + from.getHeight();
+        }
+
+        public int readingOrder(AbstractWidget widget)
+        {
+            return this == UP || this == DOWN ? widget.getX() : widget.getY();
+        }
+
+        public int gap(AbstractWidget from, AbstractWidget to)
+        {
+            return switch(this)
+            {
+                case UP -> from.getY() - (to.getY() + to.getHeight());
+                case DOWN -> to.getY() - (from.getY() + from.getHeight());
+                case LEFT -> from.getX() - (to.getX() + to.getWidth());
+                case RIGHT -> to.getX() - (from.getX() + from.getWidth());
+            };
         }
     }
 
