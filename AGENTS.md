@@ -39,7 +39,8 @@ shows a crash warning and starts a delete thread for any such jar in `mods/`.
 
 Upstream style, `feat:` or `fix:` with an optional scope, and `fork:` for what only makes sense in this fork, so the
 features can go upstream later. Brief bullet-list bodies. No `Co-Authored-By` or similar trailers. Commits and tags are
-signed. Release tags are `<upstream version>-dras.<n>`, each with a GitHub release and a bullet changelog.
+signed. Release tags are `<upstream version>-dras.<n>`, each with a GitHub release and a bullet changelog. A release
+only when the user asks for it at the end of a round: fixes collect on the branch, not one release per fix.
 
 ## Docs
 
