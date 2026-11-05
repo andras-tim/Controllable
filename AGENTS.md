@@ -32,8 +32,9 @@ docker run --rm -u "$(id -u):$(id -g)" -e HOME=/tmp -e GRADLE_USER_HOME=/cache -
   -v "$PWD:/work" -w /work eclipse-temurin:17-jdk sh ./gradlew --no-daemon :forge:build -x test
 ```
 
-The result is `forge/build/libs/dras-gamepad-forge-<version>.jar`. The name must not contain `controllable`: Amethyst
-shows a crash warning and starts a delete thread for any such jar in `mods/`.
+The result is `forge/build/libs/controllable-dras-forge-<version>.jar`. An upstream Amethyst warns about a crash and
+starts an SDL delete thread for a jar with `controllable` in its name; Amethyst::Dras dropped that mitigation, as this
+fork uses GLFW there.
 
 ## Commit conventions
 
@@ -55,4 +56,4 @@ below is the overview: keep it in step with the commits.
   screen (the inventory included), `Y` is quick move, and on screens the triggers are the mouse buttons.
 - Fixes found on the way: D-pad navigation to small buttons under a wide one, the focus on checkboxes, the empty
   radial menu on the first start.
-- Own jar name, version and issue tracker, and a build without the GitHub Packages token.
+- Own name (`Controllable::Dras`), jar name, version and issue tracker, and a build without the GitHub Packages token.

@@ -8,7 +8,7 @@ plugins {
 }
 
 base {
-    archivesName = "dras-gamepad-forge"
+    archivesName = "controllable-dras-forge"
 }
 version = "${minecraft_version}-${mod_version}"
 
