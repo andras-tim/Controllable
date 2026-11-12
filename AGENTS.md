@@ -54,6 +54,8 @@ below is the overview: keep it in step with the commits.
   backend loads a glibc native that cannot work there and crashes at random. On these launchers the fork uses GLFW.
 - The gamepad works as on a console: the D-pad moves the focus between widgets, `A` confirms, `B` goes back on every
   screen (the inventory included), `Y` is quick move, and on screens the triggers are the mouse buttons.
+- A key adapter bound to a mapping on a mouse button (e.g. a mod's middle click) clicks at the cursor on a screen;
+  upstream sends the button number as a key code, which does nothing.
 - Fixes found on the way: D-pad navigation to small buttons under a wide one, the focus on checkboxes, the empty
   radial menu on the first start.
 - Own name (`Controllable::Dras`), jar name, version and issue tracker, and a build without the GitHub Packages token.

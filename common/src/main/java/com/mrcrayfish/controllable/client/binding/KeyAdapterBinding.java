@@ -1,5 +1,9 @@
 package com.mrcrayfish.controllable.client.binding;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
+import com.mrcrayfish.controllable.Controllable;
+import com.mrcrayfish.controllable.client.ControllerInput;
 import com.mrcrayfish.controllable.client.binding.ButtonBinding;
 import com.mrcrayfish.controllable.platform.ClientServices;
 import net.minecraft.client.KeyMapping;
@@ -60,6 +64,15 @@ public final class KeyAdapterBinding extends ButtonBinding
     private void handlePressed(int action, int key, int modifiers)
     {
         Screen screen = Minecraft.getInstance().screen;
+        if(InputConstants.getKey(this.keyMapping.saveString()).getType() == InputConstants.Type.MOUSE)
+        {
+            // A mapping on a mouse button (e.g. a middle click) is a click at the cursor, its value is no key code
+            if(screen != null)
+            {
+                this.sendMouseButton(screen, action, key);
+            }
+            return;
+        }
         if(screen != null)
         {
             if(ClientServices.CLIENT.sendScreenInput(screen, key, action, modifiers))
@@ -68,5 +81,22 @@ public final class KeyAdapterBinding extends ButtonBinding
             }
         }
         ClientServices.CLIENT.sendKeyInputEvent(key, 0, action, modifiers);
+    }
+
+    private void sendMouseButton(Screen screen, int action, int button)
+    {
+        Minecraft mc = Minecraft.getInstance();
+        ControllerInput input = Controllable.getInput();
+        Window window = mc.getWindow();
+        double mouseX = input.isVirtualCursorActive() ? input.getScaledCursorX() : mc.mouseHandler.xpos() * window.getGuiScaledWidth() / window.getWidth();
+        double mouseY = input.isVirtualCursorActive() ? input.getScaledCursorY() : mc.mouseHandler.ypos() * window.getGuiScaledHeight() / window.getHeight();
+        if(action == GLFW.GLFW_PRESS)
+        {
+            ClientServices.CLIENT.sendScreenMouseClick(screen, mouseX, mouseY, button);
+        }
+        else
+        {
+            ClientServices.CLIENT.sendScreenMouseReleased(screen, mouseX, mouseY, button);
+        }
     }
 }
